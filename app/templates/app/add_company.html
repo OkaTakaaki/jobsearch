@@ -1,0 +1,142 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block title %}会社追加{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">会社情報を追加</h1>
+
+    <form method="post" action="{% url 'add_company' %}" class="form bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">会社名:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="url">会社URL:</label>
+            <input type="url" id="url" name="url" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="employee_count">社員数:</label>
+            <input type="text" id="employee_count" name="employee_count" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="working_hours">就業時間:</label>
+            <input type="text" id="working_hours" name="working_hours" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="place_of_work">就業場所:</label>
+            <input type="text" id="place_of_work" name="place_of_work" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="overtime">平均残業時間:</label>
+            <input type="text" id="overtime" name="overtime" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="salary">基本給:</label>
+            <input type="text" id="salary" name="salary" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="allowance">諸手当:</label>
+            <input type="text" id="allowance" name="allowance" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="salary_increase">昇給:</label>
+            <input type="text" id="salary_increase" name="salary_increase" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="bonuses">賞与:</label>
+            <input type="text" id="bonuses" name="bonuses" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="holidays_and_vacations">休日休暇:</label>
+            <input type="text" id="holidays_and_vacations" name="holidays_and_vacations" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="paid_leave_utilization_rate">有休消化率:</label>
+            <input type="text" id="paid_leave_utilization_rate" name="paid_leave_utilization_rate" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="employee_benefits">福利厚生:</label>
+            <input type="text" id="employee_benefits" name="employee_benefits" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="engineering_field">エンジニア領域:</label>
+            <select id="engineering_field" name="engineering_field" class="form-control">
+                <option value="">選択しない</option>
+                {% for value, label in Engineering_Field_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="programming_language">使用言語:</label>
+            <select id="programming_language" name="programming_language" class="form-control">
+                <option value="">選択しない</option>
+                {% for value, label in Programming_Language_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="training">研修制度:</label>
+            <select id="training" name="training" class="form-control">
+                {% for value, label in Training_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="ways_of_working">働き方:</label>
+            <select id="ways_of_working" name="ways_of_working" class="form-control">
+                {% for value, label in Ways_Of_Working_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="growth_environment">成長環境:</label>
+            <select id="growth_environment" name="growth_environment" class="form-control">
+                {% for value, label in Growth_Environment_choices %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="advantage">強み:</label>
+            <input type="text" id="advantage" name="advantage" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="weaknesses">弱み:</label>
+            <input type="text" id="weaknesses" name="weaknesses" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="work_life_balance">ワークライフバランス:</label>
+            <input type="text" id="work_life_balance" name="work_life_balance" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">追加</button>
+    </form>
+</div>
+{% endblock %}

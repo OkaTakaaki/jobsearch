@@ -1,0 +1,42 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block title %}志望リスト{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary">志望リスト</h1>
+    
+    <div class="mb-4">
+        <h2 class="text-success">第一志望</h2>
+        <ul class="list-group">
+            {% for company in first_choice_companies %}
+                <li class="list-group-item list-group-item-success">{{ company.name }}</li>
+            {% empty %}
+                <li class="list-group-item list-group-item-warning">第一志望の会社がありません</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="mb-4">
+        <h2 class="text-info">第二志望</h2>
+        <ul class="list-group">
+            {% for company in second_choice_companies %}
+                <li class="list-group-item list-group-item-info">{{ company.name }}</li>
+            {% empty %}
+                <li class="list-group-item list-group-item-warning">第二志望の会社がありません</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="mb-4">
+        <h2 class="text-danger">第三志望</h2>
+        <ul class="list-group">
+            {% for company in third_choice_companies %}
+                <li class="list-group-item list-group-item-danger">{{ company.name }}</li>
+            {% empty %}
+                <li class="list-group-item list-group-item-warning">第三志望の会社がありません</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

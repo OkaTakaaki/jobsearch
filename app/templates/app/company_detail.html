@@ -1,0 +1,100 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block title %}詳細{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary">{{ company.name }}</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>会社URL:</strong>
+                    <a href="{{ company.url }}" target="_blank" class="btn btn-outline-primary btn-sm">{{ company.url }}</a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>社員数:</strong>
+                    <span>{{ company.employee_count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>就業時間:</strong>
+                    <span>{{ company.working_hours }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>就業場所:</strong>
+                    <span>{{ company.place_of_work }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>平均残業時間:</strong>
+                    <span>{{ company.overtime }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>基本給:</strong>
+                    <span>{{ company.salary }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>諸手当:</strong>
+                    <span>{{ company.allowance }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>昇給:</strong>
+                    <span>{{ company.salary_increase }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>賞与:</strong>
+                    <span>{{ company.bonuses }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>休日休暇:</strong>
+                    <span>{{ company.holidays_and_vacations }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>有休消化率:</strong>
+                    <span>{{ company.paid_leave_utilization_rate }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>福利厚生:</strong>
+                    <span>{{ company.employee_benefits }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>エンジニア領域:</strong>
+                    <span>{{ company.get_engineering_field_display }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>使用言語:</strong>
+                    <span>{{ company.get_programming_language_display }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>研修制度:</strong>
+                    <span>{{ company.get_training_display }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>成長環境:</strong>
+                    <span>{{ company.get_growth_environment_display }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>働き方:</strong>
+                    <span>{{ company.get_ways_of_working_display }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>強み:</strong>
+                    <span>{{ company.advantage }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>弱み:</strong>
+                    <span>{{ company.weaknesses }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>ワークライフバランス:</strong>
+                    <span>{{ company.work_life_balance }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

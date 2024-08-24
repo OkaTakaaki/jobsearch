@@ -1,0 +1,21 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block title %}ホーム{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">ようこそ！</h1>
+    <p class="lead text-center mb-4">以下のリンクから各ページにアクセスできます。</p>
+    <div class="list-group">
+        <a href="{% url 'add_company' %}" class="list-group-item list-group-item-action list-group-item-primary">
+            会社情報を追加
+        </a>
+        <a href="{% url 'search_company' %}" class="list-group-item list-group-item-action list-group-item-secondary">
+            会社を検索
+        </a>
+        <a href="{% url 'filter_companies' %}" class="list-group-item list-group-item-action list-group-item-success">
+            会社をフィルタリング
+        </a>
+    </div>
+</div>
+{% endblock %}

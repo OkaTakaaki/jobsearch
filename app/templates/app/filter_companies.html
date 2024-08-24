@@ -1,0 +1,91 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block title %}フィルタリング{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary">会社フィルタリング</h1>
+
+    <form method="get" action="{% url 'filter_companies' %}" class="form">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="employee_count">社員数:</label>
+                <input type="text" id="employee_count" name="employee_count" class="form-control" value="{{ request.GET.employee_count }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="overtime">平均残業時間:</label>
+                <input type="text" id="overtime" name="overtime" class="form-control" value="{{ request.GET.overtime }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="salary">給料:</label>
+                <input type="text" id="salary" name="salary" class="form-control" value="{{ request.GET.salary }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="engineering_field">エンジニア領域:</label>
+                <select id="engineering_field" name="engineering_field" class="form-control">
+                    <option value="">選択しない</option>
+                    {% for value, label in Engineering_Field_choices %}
+                        <option value="{{ value }}" {% if value == request.GET.engineering_field %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="programming_language">使用言語:</label>
+                <select id="programming_language" name="programming_language" class="form-control">
+                    <option value="">選択しない</option>
+                    {% for value, label in Programming_Language_choices %}
+                        <option value="{{ value }}" {% if value == request.GET.programming_language %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="training">研修制度:</label>
+                <select id="training" name="training" class="form-control">
+                    <option value="">選択しない</option>
+                    {% for value, label in Training_choices %}
+                        <option value="{{ value }}" {% if value == request.GET.training %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="growth_environment">成長環境:</label>
+                <select id="growth_environment" name="growth_environment" class="form-control">
+                    <option value="">選択しない</option>
+                    {% for value, label in Growth_Environment_choices %}
+                        <option value="{{ value }}" {% if value == request.GET.growth_environment %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ways_of_working">働き方:</label>
+            <select id="ways_of_working" name="ways_of_working" class="form-control">
+                <option value="">選択しない</option>
+                {% for value, label in Ways_Of_Working_choices %}
+                    <option value="{{ value }}" {% if value == request.GET.ways_of_working %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block mt-4">フィルタ</button>
+    </form>
+
+    <h2 class="mt-5">フィルタ結果</h2>
+    <ul class="list-group">
+        {% for company in companies %}
+            <li class="list-group-item">
+                <a href="{% url 'company_detail' company.pk %}" class="text-dark font-weight-bold">{{ company.name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">結果がありません</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

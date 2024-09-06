@@ -1,0 +1,20 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>{{ company.name }} に対するメモ</h2>
+
+    <!-- メモフォームの表示 -->
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_note">メモ</label>
+        <textarea id="id_note" name="note" class="form-control" rows="5">{{ note.note }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">保存</button>
+    </form>
+
+    <!-- キャンセルボタン -->
+    <a href="{% url 'company_detail' company.id %}" class="btn btn-secondary mt-3">キャンセル</a>
+  </div>
+{% endblock %}

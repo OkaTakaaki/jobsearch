@@ -3,6 +3,7 @@
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mt-5">
     <h1 class="display-4 text-center mb-4">ようこそ！</h1>
     <p class="lead text-center mb-4">以下のリンクから各ページにアクセスできます。</p>
@@ -18,4 +19,14 @@
         </a>
     </div>
 </div>
+{% else %}
+<div class="list-group">
+    <a href="{% url 'login' %}" class="list-group-item list-group-item-action list-group-item-primary">
+        ログイン
+    </a>
+    <a href="{% url 'signup' %}" class="list-group-item list-group-item-action list-group-item-secondary">
+        サインアップ
+    </a>
+</div>
+{% endif %}
 {% endblock %}

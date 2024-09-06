@@ -9,16 +9,16 @@
     <form method="get" action="{% url 'filter_companies' %}" class="form">
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label for="employee_count">社員数:</label>
-                <input type="text" id="employee_count" name="employee_count" class="form-control" value="{{ request.GET.employee_count }}">
+                <label for="employee_count_min">社員数（以上）:</label>
+                <input type="number" id="employee_count_min" name="employee_count_min" class="form-control" value="{{ request.GET.employee_count_min }}">
             </div>
             <div class="form-group col-md-4">
-                <label for="overtime">平均残業時間:</label>
-                <input type="text" id="overtime" name="overtime" class="form-control" value="{{ request.GET.overtime }}">
+                <label for="overtime_max">平均残業時間（以下）:</label>
+                <input type="number" id="overtime_max" name="overtime_max" class="form-control" value="{{ request.GET.overtime_max }}">
             </div>
             <div class="form-group col-md-4">
-                <label for="salary">給料:</label>
-                <input type="text" id="salary" name="salary" class="form-control" value="{{ request.GET.salary }}">
+                <label for="salary_min">給料（以上）:</label>
+                <input type="number" id="salary_min" name="salary_min" class="form-control" value="{{ request.GET.salary_min }}">
             </div>
         </div>
 
@@ -82,10 +82,54 @@
         {% for company in companies %}
             <li class="list-group-item">
                 <a href="{% url 'company_detail' company.pk %}" class="text-dark font-weight-bold">{{ company.name }}</a>
+                <p>社員数: {{ company.employee_count }}人 | 会社URL: <a href="{{ company.url }}" target="_blank" class="btn btn-outline-primary btn-sm">{{ company.url }}</a></p>
+                <p>基本給料: <span class="salary">{{ company.salary }}</span>円</p>
+                <p>勤務時間: {{ company.working_hours }} | 平均残業時間: {{ company.overtime }}時間</p>
+                <p>強み: {{ company.advantage }}</p>
+                <p>弱み: {{ company.weaknesses }}</p>
+                {% load custom_filters %}
+                {% if user_preferences|get_item:company.id %}
+                    <p>志望選択: 第{{ user_preferences|get_item:company.id }}志望</p>
+                {% else %}
+                    <p>志望選択: 未選択</p>
+                {% endif %}
+
+                <!-- お気に入りボタン -->
+
+                <div>
+                    {% if user|is_favorite:company %}
+                        <span>お気に入り登録済み</span>
+                    {% else %}
+                        <span>お気に入りではありません</span>
+                    {% endif %}
+                </div>
+                <a href="{% url 'company_detail' company.pk %}" class="btn btn-primary btn-sm">詳細</a>
+
             </li>
         {% empty %}
             <li class="list-group-item">結果がありません</li>
         {% endfor %}
     </ul>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 三桁区切りの関数
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        // すべての基本給の要素を取得
+        var salaryElements = document.querySelectorAll('.salary');
+
+        // 各要素の内容をフォーマット
+        salaryElements.forEach(function (element) {
+            var salary = parseInt(element.textContent.replace(/,/g, '')); // 現在の内容からカンマを除去
+            if (!isNaN(salary)) {
+                element.textContent = formatNumber(salary); // フォーマットして再設定
+            }
+        });
+    });
+</script>
+
 {% endblock %}

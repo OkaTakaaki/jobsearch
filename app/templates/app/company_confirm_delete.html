@@ -1,0 +1,12 @@
+<!-- templates/app/company_confirm_delete.html -->
+{% extends "app/basetemplate.html" %}
+
+{% block content %}
+  <h1>企業の削除確認</h1>
+  <p>本当に "{{ object.name }}" を削除しますか？</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">削除</button>
+    <a href="{% url 'company_list' %}">キャンセル</a>
+  </form>
+{% endblock %}

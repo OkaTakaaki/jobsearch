@@ -1,21 +1,22 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Company(models.Model):
     # 基本情報
     name = models.CharField("会社名", max_length=200)
     url = models.URLField("会社URL")
-    employee_count = models.CharField("社員数", max_length=200)
+    employee_count = models.IntegerField("社員数")
     
     # 勤務条件
     working_hours = models.TextField("就業時間", default='')
     place_of_work = models.TextField("就業場所", default='')
-    overtime = models.CharField("平均残業時間", max_length=200)
-    salary = models.CharField("基本給", max_length=200)
+    overtime = models.IntegerField("平均残業時間")
+    salary = models.IntegerField("基本給")
     allowance = models.TextField("諸手当", default='特になし')
     salary_increase = models.CharField("昇給", max_length=200)
     bonuses = models.CharField("賞与", max_length=200, default='')
     holidays_and_vacations = models.CharField("休日休暇", max_length=200, default='')
-    paid_leave_utilization_rate = models.CharField("有休消化率", max_length=200)
+    paid_leave_utilization_rate = models.IntegerField("有休消化率")
     
     # 福利厚生
     employee_benefits = models.TextField("福利厚生")
@@ -74,9 +75,38 @@ class Company(models.Model):
     # 応募情報
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    first_choice = models.BooleanField(default=False, verbose_name="第一志望")
-    second_choice = models.BooleanField(default=False, verbose_name="第二志望")
-    third_choice = models.BooleanField(default=False, verbose_name="第三志望")
 
     def __str__(self):
         return self.name
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='favorites')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'company')  # ユーザーと会社の組み合わせは一意
+
+class Preference(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    preference_level = models.PositiveSmallIntegerField(
+        choices=[
+            (1, '第一志望'),
+            (2, '第二志望'),
+            (3, '第三志望'),
+            (4, '第四志望'),
+            (5, 'その他')
+        ],
+        default=5  # 例としてデフォルト値を設定
+    )
+
+class CompanyNote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    note = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.company.name}: {self.note[:20]}"

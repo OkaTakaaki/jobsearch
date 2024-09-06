@@ -1,0 +1,69 @@
+{% extends 'app/basetemplate.html' %}
+
+{% block title %}検索{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary">会社検索</h1>
+    <form method="get" action="{% url 'search_company' %}" class="form-inline mb-4">
+        <div class="form-group mb-2 mr-2">
+            <input type="text" name="query" class="form-control form-control-lg" value="{{ query }}" placeholder="会社名で検索">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg mb-2">検索</button>
+    </form>
+
+    <h2 class="mb-4">検索結果</h2>
+    <ul class="list-group">
+        {% if companies %}
+            {% for company in companies %}
+            <li class="list-group-item">
+                <a href="{% url 'company_detail' company.pk %}" class="text-dark font-weight-bold">{{ company.name }}</a>
+                <p>社員数: {{ company.employee_count }}人 | <a href="{{ company.url }}" target="_blank" class="btn btn-outline-primary btn-sm">{{ company.url }}</a></p>
+                <p>基本給料: <span class="salary">{{ company.salary }}</span>円</p>
+                <p>勤務時間: {{ company.working_hours }} | 平均残業時間: {{ company.overtime }}時間</p>
+                <p>強み: {{ company.advantage }}</p>
+                <p>弱み: {{ company.weaknesses }}</p>
+                {% load custom_filters %}
+                {% if user_preferences|get_item:company.id %}
+                    <p>志望選択: 第{{ user_preferences|get_item:company.id }}志望</p>
+                {% else %}
+                    <p>志望選択: 未選択</p>
+                {% endif %}
+                {% load custom_filters %}
+                {% if user|is_favorite:company %}
+                    <p>お気に入り登録「済み」</p>
+                {% else %}
+                    <p>お気に入りではありません</p>
+                {% endif %}
+                <a href="{% url 'company_detail' company.pk %}" class="btn btn-primary btn-sm">詳細</a>
+            </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">結果がありません</li>
+        {% endif %}
+    </ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 数値を三桁区切りでフォーマットする関数
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        // すべての基本給の要素を取得
+        var salaryElements = document.querySelectorAll('.salary');
+
+        // 各要素の内容をフォーマット
+        salaryElements.forEach(function (element) {
+            var salaryText = element.textContent;
+            var salaryNumber = parseInt(salaryText.replace(/,/g, '')); // 現在の内容からカンマを除去
+
+            if (!isNaN(salaryNumber)) {
+                element.textContent = formatNumber(salaryNumber); // フォーマットして再設定
+            }
+        });
+    });
+</script>
+
+{% endblock %}

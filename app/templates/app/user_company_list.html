@@ -1,0 +1,25 @@
+{% extends 'app/base_template.html' %}
+
+{% block content %}
+<h2>あなたの会社リスト</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>会社名</th>
+            <th>URL</th>
+            <th>社員数</th>
+            <!-- Add other columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for company in companies %}
+        <tr>
+            <td>{{ company.name }}</td>
+            <td><a href="{{ company.url }}">{{ company.url }}</a></td>
+            <td>{{ company.employee_count }}</td>
+            <!-- Add other fields as needed -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

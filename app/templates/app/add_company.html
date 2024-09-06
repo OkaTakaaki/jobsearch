@@ -1,142 +1,201 @@
 {% extends 'app/basetemplate.html' %}
 
-{% block title %}会社追加{% endblock %}
-
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">会社情報を追加</h1>
+    <h1>会社情報の追加</h1>
+    
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-    <form method="post" action="{% url 'add_company' %}" class="form bg-light p-4 rounded shadow-sm">
+    <form method="post">
         {% csrf_token %}
 
+        <!-- 基本情報 -->
+        <h4>基本情報</h4>
+        
         <div class="form-group">
-            <label for="name">会社名:</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <label for="id_name">会社名</label>
+            {{ form.name.errors }}
+            <input type="text" class="form-control" id="id_name" name="name" value="{{ form.name.value }}">
         </div>
 
         <div class="form-group">
-            <label for="url">会社URL:</label>
-            <input type="url" id="url" name="url" class="form-control">
+            <label for="id_url">会社URL</label>
+            {{ form.url.errors }}
+            <input type="url" class="form-control" id="id_url" name="url" value="{{ form.url.value }}">
         </div>
 
         <div class="form-group">
-            <label for="employee_count">社員数:</label>
-            <input type="text" id="employee_count" name="employee_count" class="form-control">
+            <label for="id_employee_count">社員数</label>
+            {{ form.employee_count.errors }}
+            <input type="number" class="form-control" id="id_employee_count" name="employee_count" value="{{ form.employee_count.value }}">
+        </div>
+
+        <!-- 勤務条件 -->
+        <h4>勤務条件</h4>
+
+        <div class="form-group">
+            <label for="id_working_hours">就業時間</label>
+            {{ form.working_hours.errors }}
+            <textarea class="form-control" id="id_working_hours" name="working_hours" rows="3">{{ form.working_hours.value }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="working_hours">就業時間:</label>
-            <input type="text" id="working_hours" name="working_hours" class="form-control">
+            <label for="id_place_of_work">就業場所</label>
+            {{ form.place_of_work.errors }}
+            <textarea class="form-control" id="id_place_of_work" name="place_of_work" rows="3">{{ form.place_of_work.value }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="place_of_work">就業場所:</label>
-            <input type="text" id="place_of_work" name="place_of_work" class="form-control">
+            <label for="id_overtime">平均残業時間</label>
+            {{ form.overtime.errors }}
+            <input type="number" class="form-control" id="id_overtime" name="overtime" value="{{ form.overtime.value }}">
         </div>
 
         <div class="form-group">
-            <label for="overtime">平均残業時間:</label>
-            <input type="text" id="overtime" name="overtime" class="form-control">
+            <label for="id_salary">基本給</label>
+            {{ form.salary.errors }}
+            <input type="number" class="form-control" id="id_salary" name="salary" value="{{ form.salary.value }}">
         </div>
 
         <div class="form-group">
-            <label for="salary">基本給:</label>
-            <input type="text" id="salary" name="salary" class="form-control">
+            <label for="id_allowance">諸手当</label>
+            {{ form.allowance.errors }}
+            <textarea class="form-control" id="id_allowance" name="allowance" rows="3">{{ form.allowance.value }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="allowance">諸手当:</label>
-            <input type="text" id="allowance" name="allowance" class="form-control">
+            <label for="id_salary_increase">昇給</label>
+            {{ form.salary_increase.errors }}
+            <input type="text" class="form-control" id="id_salary_increase" name="salary_increase" value="{{ form.salary_increase.value }}">
         </div>
 
         <div class="form-group">
-            <label for="salary_increase">昇給:</label>
-            <input type="text" id="salary_increase" name="salary_increase" class="form-control">
+            <label for="id_bonuses">賞与</label>
+            {{ form.bonuses.errors }}
+            <input type="text" class="form-control" id="id_bonuses" name="bonuses" value="{{ form.bonuses.value }}">
         </div>
 
         <div class="form-group">
-            <label for="bonuses">賞与:</label>
-            <input type="text" id="bonuses" name="bonuses" class="form-control">
+            <label for="id_holidays_and_vacations">休日休暇</label>
+            {{ form.holidays_and_vacations.errors }}
+            <input type="text" class="form-control" id="id_holidays_and_vacations" name="holidays_and_vacations" value="{{ form.holidays_and_vacations.value }}">
         </div>
 
         <div class="form-group">
-            <label for="holidays_and_vacations">休日休暇:</label>
-            <input type="text" id="holidays_and_vacations" name="holidays_and_vacations" class="form-control">
+            <label for="id_paid_leave_utilization_rate">有休消化率</label>
+            {{ form.paid_leave_utilization_rate.errors }}
+            <input type="number" class="form-control" id="id_paid_leave_utilization_rate" name="paid_leave_utilization_rate" value="{{ form.paid_leave_utilization_rate.value }}">
         </div>
 
-        <div class="form-group">
-            <label for="paid_leave_utilization_rate">有休消化率:</label>
-            <input type="text" id="paid_leave_utilization_rate" name="paid_leave_utilization_rate" class="form-control">
-        </div>
+        <!-- 福利厚生 -->
+        <h4>福利厚生</h4>
 
         <div class="form-group">
-            <label for="employee_benefits">福利厚生:</label>
-            <input type="text" id="employee_benefits" name="employee_benefits" class="form-control">
+            <label for="id_employee_benefits">福利厚生</label>
+            {{ form.employee_benefits.errors }}
+            <textarea class="form-control" id="id_employee_benefits" name="employee_benefits" rows="3">{{ form.employee_benefits.value }}</textarea>
         </div>
 
+        <!-- エンジニアリング領域 -->
+        <h4>エンジニアリング領域</h4>
+
         <div class="form-group">
-            <label for="engineering_field">エンジニア領域:</label>
-            <select id="engineering_field" name="engineering_field" class="form-control">
-                <option value="">選択しない</option>
+            <label for="id_engineering_field">エンジニア領域</label>
+            {{ form.engineering_field.errors }}
+            <select class="form-control" id="id_engineering_field" name="engineering_field">
                 {% for value, label in Engineering_Field_choices %}
-                    <option value="{{ value }}">{{ label }}</option>
+                    <option value="{{ value }}" {% if value == form.engineering_field.value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
         </div>
 
+        <!-- 使用言語 -->
+        <h4>使用言語</h4>
+
         <div class="form-group">
-            <label for="programming_language">使用言語:</label>
-            <select id="programming_language" name="programming_language" class="form-control">
-                <option value="">選択しない</option>
+            <label for="id_programming_language">使用言語</label>
+            {{ form.programming_language.errors }}
+            <select class="form-control" id="id_programming_language" name="programming_language">
                 {% for value, label in Programming_Language_choices %}
-                    <option value="{{ value }}">{{ label }}</option>
+                    <option value="{{ value }}" {% if value == form.programming_language.value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
         </div>
 
+        <!-- 研修制度 -->
+        <h4>研修制度</h4>
+
         <div class="form-group">
-            <label for="training">研修制度:</label>
-            <select id="training" name="training" class="form-control">
+            <label for="id_training">研修制度</label>
+            {{ form.training.errors }}
+            <select class="form-control" id="id_training" name="training">
                 {% for value, label in Training_choices %}
-                    <option value="{{ value }}">{{ label }}</option>
+                    <option value="{{ value }}" {% if value == form.training.value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
         </div>
 
+        <!-- 働き方 -->
+        <h4>働き方</h4>
+
         <div class="form-group">
-            <label for="ways_of_working">働き方:</label>
-            <select id="ways_of_working" name="ways_of_working" class="form-control">
+            <label for="id_ways_of_working">働き方</label>
+            {{ form.ways_of_working.errors }}
+            <select class="form-control" id="id_ways_of_working" name="ways_of_working">
                 {% for value, label in Ways_Of_Working_choices %}
-                    <option value="{{ value }}">{{ label }}</option>
+                    <option value="{{ value }}" {% if value == form.ways_of_working.value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
         </div>
 
+        <!-- 成長環境 -->
+        <h4>成長環境(忙しさ)</h4>
+
         <div class="form-group">
-            <label for="growth_environment">成長環境:</label>
-            <select id="growth_environment" name="growth_environment" class="form-control">
+            <label for="id_growth_environment">成長環境(忙しさ)</label>
+            {{ form.growth_environment.errors }}
+            <select class="form-control" id="id_growth_environment" name="growth_environment">
                 {% for value, label in Growth_Environment_choices %}
-                    <option value="{{ value }}">{{ label }}</option>
+                    <option value="{{ value }}" {% if value == form.growth_environment.value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
         </div>
 
+        <!-- その他 -->
+        <h4>その他</h4>
+
         <div class="form-group">
-            <label for="advantage">強み:</label>
-            <input type="text" id="advantage" name="advantage" class="form-control">
+            <label for="id_advantage">強み</label>
+            {{ form.advantage.errors }}
+            <textarea class="form-control" id="id_advantage" name="advantage" rows="3">{{ form.advantage.value }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="weaknesses">弱み:</label>
-            <input type="text" id="weaknesses" name="weaknesses" class="form-control">
+            <label for="id_weaknesses">弱み</label>
+            {{ form.weaknesses.errors }}
+            <textarea class="form-control" id="id_weaknesses" name="weaknesses" rows="3">{{ form.weaknesses.value }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="work_life_balance">ワークライフバランス:</label>
-            <input type="text" id="work_life_balance" name="work_life_balance" class="form-control">
+            <label for="id_work_life_balance">ワークライフバランス</label>
+            {{ form.work_life_balance.errors }}
+            <textarea class="form-control" id="id_work_life_balance" name="work_life_balance" rows="3">{{ form.work_life_balance.value }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-success btn-block">追加</button>
+        <button type="submit" class="btn btn-primary">送信</button>
     </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 {% endblock %}

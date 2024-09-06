@@ -3,95 +3,132 @@
 {% block title %}詳細{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4 text-primary">{{ company.name }}</h1>
+<div class="container mt-4">
+    <h1 class="text-center mb-3 text-primary">{{ company.name }}</h1>
+
+    {% if user.is_superuser %}
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'company_edit' company.pk %}" class="btn btn-secondary mr-2">編集</a>
+            <a href="{% url 'company_delete' company.pk %}" class="btn btn-danger">削除</a>
+        </div>
+    {% endif %}
+    
+    {% if request.user.is_authenticated %}
+        {% if is_favorite %}
+        <div class="d-flex justify-content-end mb-3">
+            <form method="post" action="{% url 'toggle_favorite' company.pk %}" class="mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">お気に入りから削除</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-end mb-3">
+            <form method="post" action="{% url 'toggle_favorite' company.pk %}" class="mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">お気に入りに追加</button>
+            </form>
+        </div>
+        {% endif %}
 
     <div class="card">
-        <div class="card-body">
+        <div class="card-body p-3">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>会社URL:</strong>
                     <a href="{{ company.url }}" target="_blank" class="btn btn-outline-primary btn-sm">{{ company.url }}</a>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>社員数:</strong>
-                    <span>{{ company.employee_count }}</span>
+                    <span>{{ company.employee_count }}人</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>就業時間:</strong>
                     <span>{{ company.working_hours }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>就業場所:</strong>
                     <span>{{ company.place_of_work }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>平均残業時間:</strong>
-                    <span>{{ company.overtime }}</span>
+                    <span>{{ company.overtime }}時間</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>基本給:</strong>
                     <span>{{ company.salary }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>諸手当:</strong>
                     <span>{{ company.allowance }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>昇給:</strong>
                     <span>{{ company.salary_increase }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>賞与:</strong>
                     <span>{{ company.bonuses }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>休日休暇:</strong>
                     <span>{{ company.holidays_and_vacations }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>有休消化率:</strong>
-                    <span>{{ company.paid_leave_utilization_rate }}</span>
+                    <span>{{ company.paid_leave_utilization_rate }}%</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>福利厚生:</strong>
                     <span>{{ company.employee_benefits }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>エンジニア領域:</strong>
                     <span>{{ company.get_engineering_field_display }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>使用言語:</strong>
                     <span>{{ company.get_programming_language_display }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>研修制度:</strong>
                     <span>{{ company.get_training_display }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>成長環境:</strong>
                     <span>{{ company.get_growth_environment_display }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>働き方:</strong>
                     <span>{{ company.get_ways_of_working_display }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>強み:</strong>
                     <span>{{ company.advantage }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>弱み:</strong>
                     <span>{{ company.weaknesses }}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center py-2">
                     <strong>ワークライフバランス:</strong>
                     <span>{{ company.work_life_balance }}</span>
                 </li>
             </ul>
         </div>
-    </div>
+    </div>        
+        <h3>あなたのメモ</h3>
+            {% if user_note %}
+                <p>{{ user_note.note }}</p>
+                <a href="{% url 'add_edit_note' company.id %}" class="btn btn-secondary">メモを編集</a>
+            {% else %}
+                <p>メモはありません。</p>
+                <a href="{% url 'add_edit_note' company.id %}" class="btn btn-secondary">メモを追加</a>
+            {% endif %}
+        {% else %}
+            <p><a href="{% url 'login' %}">ログイン</a> してメモを追加してください。</p>
+        {% endif %}
+
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

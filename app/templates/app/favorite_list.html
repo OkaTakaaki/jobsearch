@@ -1,0 +1,19 @@
+<!-- templates/app/favorite_list.html -->
+{% extends 'app/basetemplate.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>お気に入り一覧</h2>
+    {% if companies %}
+      <ul class="list-group">
+        {% for company in companies %}
+          <li class="list-group-item">
+            <a href="{% url 'company_detail' pk=company.pk %}">{{ company.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>お気に入りの会社はありません。</p>
+    {% endif %}
+  </div>
+{% endblock %}

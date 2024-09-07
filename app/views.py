@@ -66,6 +66,7 @@ def add_company(request):
     }
 
     return render(request, 'app/add_company.html', context)
+
 # お気に入り追加・削除ビュー
 def add_favorite(request, company_id):
     if not request.user.is_authenticated:

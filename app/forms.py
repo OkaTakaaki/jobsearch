@@ -1,5 +1,5 @@
 from django import forms
-from .models import Company, Preference, CompanyNote
+from .models import Company, Preference, CompanyNote, PlaceOfWork
 
 class CompanyForm(forms.ModelForm):
     class Meta:
@@ -9,7 +9,14 @@ class CompanyForm(forms.ModelForm):
             'first_choice': forms.CheckboxInput(),  # 'first_choice' フィールドにチェックボックスウィジェットを使用
             'second_choice': forms.CheckboxInput(),  # 'second_choice' フィールドにチェックボックスウィジェットを使用
             'third_choice': forms.CheckboxInput(),   # 'third_choice' フィールドにチェックボックスウィジェットを使用
+            'place_of_work': forms.CheckboxSelectMultiple(),  # 複数選択可能なウィジェットを使用
         }
+
+    # PlaceOfWorkの選択肢を提供するために、`form`の`__init__`メソッドをオーバーライドします
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['place_of_work'].queryset = PlaceOfWork.objects.all()  # 選択肢として全`PlaceOfWork`オブジェクトを設定
+
         
 class CompanySearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=False, label='検索')

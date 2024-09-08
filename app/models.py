@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class PlaceOfWork(models.Model):
+    place = models.CharField("就業場所", max_length=100)
+
+    def __str__(self):
+        return self.place
+
 class Company(models.Model):
     # 基本情報
     name = models.CharField("会社名", max_length=200)
@@ -9,7 +15,7 @@ class Company(models.Model):
     
     # 勤務条件
     working_hours = models.TextField("就業時間", default='')
-    place_of_work = models.TextField("就業場所", default='')
+    place_of_work = models.ManyToManyField(PlaceOfWork, verbose_name="就業場所")
     overtime = models.IntegerField("平均残業時間")
     salary = models.IntegerField("基本給")
     allowance = models.TextField("諸手当", default='特になし')
@@ -28,6 +34,7 @@ class Company(models.Model):
         FULLSTACKENGINEER = 'fullstack_engineer', 'フルスタックエンジニア(フロントとバックエンドのハーフ) - ウェブアプリケーション全体の設計と実装を担当。幅広い技術スキルが求められる。'
         DEVEOPMENTSENGINEER = 'deveopments_engineer', 'デベロップメントエンジニア(ソフトウェア開発、プログラミング) - ソフトウェアの設計・開発を担当。基本的にはプログラミング全般に関わる。'
         SITERELIABILITYENGINEER = 'sitereliability_engineer', 'サイトリライアビリティエンジニア(システム管理、クラウドコンピューティング、ネットワークエンジニアリング、セキュリティ) - システムの運用と監視を行い、障害対応やパフォーマンスの最適化に注力すする。'
+        UNKNOWN = 'unknown', '不明'
     engineering_field = models.CharField("エンジニア領域", choices=Engineering_Field.choices, max_length=50)
     
     # 使用言語

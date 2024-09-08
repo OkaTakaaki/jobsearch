@@ -8,7 +8,7 @@ from .forms import CompanyForm, CompanySearchForm, PreferenceForm, CompanyNoteFo
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from .models import Company, Favorite, Preference, CompanyNote
+from .models import Company, Favorite, Preference, CompanyNote, PlaceOfWork
 from django.views.generic.edit import FormMixin, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from .mixins import AdminRequiredMixin
@@ -45,17 +45,15 @@ def add_company(request):
             try:
                 form.save()
                 messages.success(request, "会社が正常に追加されました。")
-                return redirect('home')
+                return redirect('home')  # 会社一覧ページなどにリダイレクト
             except Exception as e:
                 messages.error(request, f"エラーが発生しました: {e}")
         else:
-            # バリデーションエラーを表示
             messages.error(request, "フォームにエラーがあります。")
             print(form.errors)  # エラー内容をコンソールに出力
     else:
         form = CompanyForm()
 
-    # 選択肢の情報をコンテキストに追加
     context = {
         'form': form,
         'Engineering_Field_choices': Company.Engineering_Field.choices,
@@ -63,6 +61,7 @@ def add_company(request):
         'Training_choices': Company.Training.choices,
         'Growth_Environment_choices': Company.Growth_Environment.choices,
         'Ways_Of_Working_choices': Company.Ways_Of_Working.choices,
+        'Place_Of_Work_choices': PlaceOfWork.objects.all()  # `PlaceOfWork`オブジェクトをコンテキストに追加
     }
 
     return render(request, 'app/add_company.html', context)
@@ -144,6 +143,7 @@ def filter_companies(request):
     training = request.GET.get('training', '')
     growth_environment = request.GET.get('growth_environment', '')
     ways_of_working = request.GET.get('ways_of_working', '')
+    place_of_work = request.GET.getlist('place_of_work')  # 使用場所のフィルタ
 
     # 初期クエリセット
     companies = Company.objects.all()
@@ -177,6 +177,10 @@ def filter_companies(request):
     if ways_of_working:
         companies = companies.filter(ways_of_working=ways_of_working)
     
+    # 使用場所のフィルタリング
+    if place_of_work:
+        companies = companies.filter(place_of_work__id__in=place_of_work)
+    
     # ユーザーの志望選択情報
     user_preferences = Preference.objects.filter(user=request.user)
     user_favorite = Favorite.objects.filter(user=request.user)
@@ -194,6 +198,7 @@ def filter_companies(request):
         'Training_choices': Company.Training.choices,
         'Growth_Environment_choices': Company.Growth_Environment.choices,
         'Ways_Of_Working_choices': Company.Ways_Of_Working.choices,
+        'Place_Of_Work_choices': PlaceOfWork.objects.all(),  # すべての場所オプションを提供
     }
     
     return render(request, 'app/filter_companies.html', context)

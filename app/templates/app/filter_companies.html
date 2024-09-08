@@ -22,6 +22,21 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="place_of_work">事業場所:</label>
+            <select id="place_of_work" name="place_of_work" class="form-control" multiple>
+                <option value="">選択しない</option>
+                {% for place in Place_Of_Work_choices %}
+                    <option value="{{ place.id }}" {% if place.id|stringformat:"s" in request.GET.place_of_work %}selected{% endif %}>{{ place.place }}</option>
+                {% empty %}
+                    <option value="">事業場所がありません</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        
+        
+
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="engineering_field">エンジニア領域:</label>
@@ -83,7 +98,13 @@
             <li class="list-group-item">
                 <a href="{% url 'company_detail' company.pk %}" class="text-dark font-weight-bold">{{ company.name }}</a>
                 <p>社員数: {{ company.employee_count }}人 | 会社URL: <a href="{{ company.url }}" target="_blank" class="btn btn-outline-primary btn-sm">{{ company.url }}</a></p>
-                <p>基本給料: <span class="salary">{{ company.salary }}</span>円</p>
+                <p>基本給料: <span class="salary">{{ company.salary }}</span>円 | 事業場所:
+                    {% for place in company.place_of_work.all %}
+                        {{ place }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        事業場所が設定されていません
+                    {% endfor %}
+                </p>
                 <p>勤務時間: {{ company.working_hours }} | 平均残業時間: {{ company.overtime }}時間</p>
                 <p>強み: {{ company.advantage }}</p>
                 <p>弱み: {{ company.weaknesses }}</p>
